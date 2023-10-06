@@ -16,12 +16,20 @@ const getAllPokemon = async (req, res) => {
 //get one pokemon
 const getOnePokemon = async (req, res) => {
   const { id } = req.params;
+  const name = req.params.id;
+
   const pokemon = jsonData.find((data) => {
     if (Number(id) === Number(data.id)) {
       return data;
+    } else {
+      const keys = Object.keys(data);
+      for (let language in data.name) {
+        if (data.name[language] === name) {
+          return data;
+        }
+      }
     }
   });
-
   if (pokemon) {
     res.status(200).json(pokemon);
   } else {
@@ -54,4 +62,8 @@ const getPokemonInfo = async (req, res) => {
   }
 };
 
-module.exports = { getAllPokemon, getOnePokemon, getPokemonInfo };
+module.exports = {
+  getAllPokemon,
+  getOnePokemon,
+  getPokemonInfo,
+};
