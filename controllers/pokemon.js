@@ -24,7 +24,7 @@ const getOnePokemon = async (req, res) => {
     } else {
       const keys = Object.keys(data);
       for (let language in data.name) {
-        if (data.name[language] === name) {
+        if (data.name[language].toLowerCase() === name.toLowerCase()) {
           return data;
         }
       }
