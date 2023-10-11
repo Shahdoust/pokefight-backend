@@ -6,6 +6,8 @@ const usernamePost = (req, res) => {
   console.log(usernames);
   if (username) {
     res.status(200).json(username);
+  } else {
+    res.status(404).json({ msg: "No user name available" });
   }
 };
 
