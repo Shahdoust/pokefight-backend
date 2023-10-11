@@ -4,6 +4,7 @@ const cors = require("cors");
 require("colors");
 require("dotenv").config();
 const pokemon = require("./routes/pokemon");
+const username = require("./routes/username");
 
 app.use(express.json());
 app.use(cors());
@@ -17,7 +18,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/pokemon", pokemon);
-
+// app.use("/fight");
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`.rainbow);
 });
