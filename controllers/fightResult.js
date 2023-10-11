@@ -1,31 +1,26 @@
 let jsonData = require("../pokedex.json");
 let fighters = [];
 
-const test=async(req,res)=>{
-   // const {name}=req.params
-   if (resulttotalpowep1 > resulttotalpowep2) {
-    let winner = "Player 1 Wins";
-    res.status(200).json(winner);
-} else {
-    let winner = "Player 2 Wins";
-    res.status(200).json(winner);
-}
+const getResult=async(req,res)=>{
+  
+
+    res.status(200).json(fighters[0]);
+
 }
 
 const pk=(req, res) => {
-    // Handle the POST request here
+   
     const requestData = req.body;
     const{p1,p2}=req.body
     const pokimonP1Id=Number(p1)
     const pokimonP2Id=Number(p2);
-      // p1Hp;
+     
     let p1attack
    // let p1Defence
     let p1SpAttack
     let p1SpDefence
 
-    //res.json({ message: 'Post request successful', data: requestData });
-   // res.json({ message: 'Post request successful', result: result });
+  
 
    const pokemonp2 = jsonData.find((y) => {
     if (pokimonP2Id === Number(y.id)) {
@@ -69,9 +64,13 @@ const pk=(req, res) => {
 
   if (resulttotalpowep1 > resulttotalpowep2) {
     let winner = "Player 1 Wins";
+    fighters.pop()
+    fighters.push(winner)
     res.status(200).json(winner);
 } else {
+    fighters.pop()
     let winner = "Player 2 Wins";
+    fighters.push(winner)
     res.status(200).json(winner);
 }
 
@@ -80,18 +79,4 @@ const pk=(req, res) => {
 
 }
 
-
-
-
-
-
-
-
-
-
-   
-////
-
-
-
-module.exports = {test,pk};
+module.exports = {getResult,pk};
