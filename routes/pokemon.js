@@ -8,12 +8,19 @@ const {
 } = require("../controllers/pokemon");
 const { usernamePost, allUsername } = require("../controllers/postusername");
 
-const { postFighter, getFighters } = require("../controllers/fight");
+// const { postFighter, getFighters } = require("../controllers/fight");
+
+const {
+  postOneUser,
+  getOneResult,
+  postFighter,
+  getAllResults,
+} = require("../controllers/result");
 
 const api = express.Router();
-api.route("/username").post(usernamePost).get(allUsername);
-
-api.route("/fight").post(postFighter).get(getFighters);
+api.route("/game/save/username").post(postOneUser);
+api.route("/game/result").get(getOneResult);
+api.route("/game/save").post(postFighter).get(getAllResults);
 
 api.route("/").get(getAllPokemon);
 api.route("/search").get(getPokemonBySearch);
