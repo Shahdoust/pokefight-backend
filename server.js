@@ -6,12 +6,14 @@ require("dotenv").config();
 const pokemon = require("./routes/pokemon");
 const username = require("./routes/username");
 
+const connectDB = require("./dbinit");
+connectDB();
 app.use(express.json());
 app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 
-const PORT = 8080;
+const PORT = process.env.PORT;
 
 app.get("/", (req, res) => {
   res.send("Welcome to the pokemon");
