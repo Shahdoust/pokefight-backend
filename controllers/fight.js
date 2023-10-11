@@ -1,6 +1,6 @@
 let fighters = [];
 //post fighters
-const selectedPokemon = (req, res) => {
+const postFighter = (req, res) => {
   const { pokemonSelected, pokemonOpponent } = req.body;
   fighters = [];
   fighters.push({ pokemonSelected: pokemonSelected });
@@ -9,6 +9,8 @@ const selectedPokemon = (req, res) => {
 
   if (fighters) {
     res.status(200).json(fighters);
+  } else {
+    res.status(404).json({ msg: "No fighters yet" });
   }
 };
 
@@ -17,4 +19,4 @@ const getFighters = (req, res) => {
   res.status(200).json(fighters);
 };
 
-module.exports = { selectedPokemon, getFighters };
+module.exports = { postFighter, getFighters };
