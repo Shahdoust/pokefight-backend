@@ -6,11 +6,11 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   wins: {
-    type: String,
+    type: Number,
     required: true,
   },
   loses: {
-    type: String,
+    type: Number,
     required: true,
   },
   points: {

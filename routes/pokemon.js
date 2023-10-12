@@ -12,6 +12,7 @@ const { usernamePost, allUsername } = require("../controllers/postusername");
 
 const {
   postOneUser,
+  getOneUser,
   getOneResult,
   postFighter,
   getAllResults,
@@ -20,7 +21,7 @@ const {
 
 const api = express.Router();
 api.route("/fight").get(oneFighter);
-api.route("/game/save/username").post(postOneUser);
+api.route("/game/save/username").get(getOneUser).post(postOneUser);
 api.route("/game/result").get(getOneResult);
 api.route("/game/save").post(postFighter).get(getAllResults);
 
