@@ -1,15 +1,32 @@
 const Result = require("../schemas/Username");
 let dataStore = {};
 let fighters = [];
-
+let singleUsername = [];
 //get username
 const postOneUser = async (req, res) => {
   try {
     const { username } = req.body;
-    dataStore.username = username;
-    res.status(201).json(username);
+
+    if (username) {
+      dataStore.username = username;
+      singleUsername = username;
+      res.status(200).json(username);
+    } else {
+      // console.log(findUser);
+      return res.status(500).json({ msg: "No data " });
+    }
   } catch (error) {
     res.status(500).json(error);
+  }
+};
+
+const getOneUser = async (req, res) => {
+  const username = singleUsername;
+
+  if (username) {
+    res.status(200).json({ username });
+  } else {
+    res.status(200).json({ msg: "Data is not correct" });
   }
 };
 
@@ -24,21 +41,38 @@ const postFighter = async (req, res) => {
     dataStore.result = resultGame;
 
     const username = dataStore.username;
-    const wins = dataStore.result.winner.english;
-    const loses = dataStore.result.loser.english;
+    const wins = dataStore.result.winner;
+    const loses = dataStore.result.loser;
     const points = dataStore.result.points;
-    const result = await Result.create({ username, wins, loses, points });
-    if (result) {
+    const findUser = await Result.findOne({ username: username });
+
+    if (!findUser) {
+      const result = await Result.create({ username, wins, loses, points });
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json({ msg: "Can not create data in DB" });
+      }
+    } else if (findUser) {
+      const objResult = await Result.findOne({ username: username });
+      const id = objResult["_id"];
+      const wins = objResult["wins"] + dataStore.result.winner;
+      const loses = objResult["loses"] + dataStore.result.loser;
+      const points = objResult["points"] + dataStore.result.points;
+      const result = await Result.findOneAndUpdate(
+        { _id: id },
+        { $set: { wins: wins, loses: loses, points: points } },
+        { new: true }
+      );
       res.status(200).json(result);
-    } else {
-      res.status(404).json({ msg: "Can not create data in DB" });
     }
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 //get fighters
 const oneFighter = (req, res) => {
-  // console.log(fighters);
   if (fighters) {
     res.status(200).json(fighters);
   } else {
@@ -88,30 +122,52 @@ function playGame(pokemon) {
   let totalStats2 = calculateTotalStats(pokemon[1].pokemonOpponent);
 
   // The Pokemon with the higher total stats is the winner
-  let winner =
+  let selectedWinner =
     totalStats1 > totalStats2
-      ? pokemon[0].pokemonSelected
-      : pokemon[1].pokemonOpponent;
+      ? "pokemonSelected" //pokemon[0].pokemonSelected
+      : "pokemonOpponent"; //pokemon[1].pokemonOpponent;
+
+  // Declare the vars
+  let winner = 0;
+  let loser = 0;
+  let points = 0;
 
   // The loser is the Pokemon that isn't the winner
-  let loser =
-    winner === pokemon[0].pokemonSelected
-      ? pokemon[1].pokemonOpponent
-      : pokemon[0].pokemonSelected;
+
+  let selectedLoser =
+    selectedWinner === "pokemonSelected"
+      ? "pokemonOpponent" //pokemon[1].pokemonOpponent
+      : "pokemonSelected"; //pokemon[0].pokemonSelected;
+  console.log("start", winner);
+  if (selectedWinner === "pokemonSelected") {
+    winner = 1;
+    console.log("pokemonSelected", winner);
+  } else {
+    loser = 1;
+    console.log("loser", loser);
+  }
+
+  if (selectedLoser === "pokemonOpponent") {
+    winner = 1;
+    console.log("pokemonOpponent", winner);
+  } else {
+    loser = 1;
+    console.log("loser", winner);
+  }
 
   // The points are the difference in total stats
-  let points = Math.abs(totalStats1 - totalStats2);
-
+  points = Math.abs(totalStats1 - totalStats2);
   // Return the result
   return {
-    winner: winner.name,
-    loser: loser.name,
+    winner: winner,
+    loser: loser,
     points: points,
   };
 }
 
 module.exports = {
   postOneUser,
+  getOneUser,
   getOneResult,
   postFighter,
   getAllResults,
