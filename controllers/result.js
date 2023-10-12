@@ -36,6 +36,16 @@ const postFighter = async (req, res) => {
   } catch (error) {}
 };
 
+//get fighters
+const oneFighter = (req, res) => {
+  // console.log(fighters);
+  if (fighters) {
+    res.status(200).json(fighters);
+  } else {
+    res.status(400).json({ msg: "No fighters yet" });
+  }
+};
+
 //get result of the game
 const getOneResult = (req, res) => {
   if (!dataStore) {
@@ -105,4 +115,5 @@ module.exports = {
   getOneResult,
   postFighter,
   getAllResults,
+  oneFighter,
 };
