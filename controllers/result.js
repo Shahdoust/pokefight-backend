@@ -38,7 +38,7 @@ const postFighter = async (req, res) => {
 
 //get fighters
 const oneFighter = (req, res) => {
-  console.log(fighters);
+  // console.log(fighters);
   if (fighters) {
     res.status(200).json(fighters);
   } else {
