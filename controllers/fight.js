@@ -44,11 +44,13 @@ function playGame(pokemon) {
 //post fighters
 const postFighter = (req, res) => {
   const { pokemonSelected, pokemonOpponent } = req.body;
-  fighters = [];
+  // testing to see if this fixes error of previously selected fighters
+  // fighters = [];
   fighters.push({ pokemonSelected: pokemonSelected });
   fighters.push({ pokemonOpponent: pokemonOpponent });
 
-  if (fighters) {
+  //change to length to see if this helps
+  if (fighters.length === 2) {
     res.status(200).json(fighters);
   } else {
     res.status(404).json({ msg: "No fighters yet" });
