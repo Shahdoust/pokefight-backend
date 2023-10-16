@@ -31,7 +31,9 @@ function playGame(pokemon) {
       : pokemon[0].pokemonSelected;
 
   // The points are the difference in total stats
-  let points = Math.abs(totalStats1 - totalStats2);
+
+  // wondering if this will fix the points
+  let points = winner === pokemon[0].pokemonSelected ? Math.abs(totalStats1 - totalStats2) : 0;
 
   // Return the result
   return {
