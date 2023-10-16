@@ -138,25 +138,21 @@ function playGame(pokemon) {
     selectedWinner === "pokemonSelected"
       ? "pokemonOpponent" //pokemon[1].pokemonOpponent
       : "pokemonSelected"; //pokemon[0].pokemonSelected;
-  console.log("start", winner);
   if (selectedWinner === "pokemonSelected") {
     winner = 1;
-    console.log("pokemonSelected", winner);
   } else {
     loser = 1;
-    console.log("loser", loser);
   }
 
-  if (selectedLoser === "pokemonOpponent") {
-    winner = 1;
-    console.log("pokemonOpponent", winner);
-  } else {
-    loser = 1;
-    console.log("loser", winner);
-  }
+  // if (selectedLoser === "pokemonOpponent") {
+  //   winner = 1;
+  // } else {
+  //   loser = 1;
+  // }
 
   // The points are the difference in total stats
-  points = Math.abs(totalStats1 - totalStats2);
+  if (selectedWinner === "pokemonSelected")
+    points = Math.abs(totalStats1 - totalStats2);
   // Return the result
   return {
     winner: winner,
